@@ -4,16 +4,16 @@ ctx = localCanvas.getContext('2d');
 let localStream;
     
 function makeMeat() {
-  // Canvasから描画内容を保持するimageDataを取得する。
+  // Canvasから描画内容を保持するimageDataを取得する。
   var imageData = ctx.getImageData(0, 0, localCanvas.width, localCanvas.height);
-  // 描画内容に対して、上記のグレースケールにする式を当てはめながらrgbの値を計算する。
+  // 描画内容に対して、上記のグレースケールにする式を当てはめながらrgbの値を計算する。
   var d = imageData.data;
   for (var i = 0; i < d.length; i+=4) {
     var g = d[i] * 0.2126 + d[i+1] * 0.7152 + d[i+2] * 0.0722;
-    // ↓グレースケール
+    // ↓グレースケール
     d[i] = d[i+1] = d[i+2] = g;
     if (g > 200) {
-        // 白に近いところは白
+        // 白に近いところは白
         d[i] = d[i+1] = d[i+2] = 255;
     } else if (g > 150) {
         // 明るめのところは赤を少なくする
