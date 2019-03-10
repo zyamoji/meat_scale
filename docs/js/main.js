@@ -46,7 +46,7 @@ function takeShot() {
     localCanvas.height = viewHeight;
 
     // fit video size to canvas size
-    ctx.scale(viewWidth/localVideo.videoWidth, viewWidth/localVideo.videoHeight);
+    ctx.scale(viewWidth/localVideo.videoWidth, viewHeight/localVideo.videoHeight);
     ctx.drawImage(localVideo, 0, 0);
     
     stopVideo();
