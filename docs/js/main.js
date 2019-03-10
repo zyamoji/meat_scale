@@ -2,6 +2,7 @@ let localVideo = document.getElementById('localVideo');
 let localCanvas = document.getElementById('canvas');
 ctx = localCanvas.getContext('2d');
 let localStream;
+let deviceWidth;
     
 function makeMeat() {
   // Canvasから描画内容を保持するimageDataを取得する。
@@ -37,9 +38,17 @@ function makeMeat() {
 }
 
 function takeShot() {
-    localCanvas.width = localVideo.videoWidth;
-    localCanvas.height = localVideo.videoHeight;
+    // get video width on display
+    const viewWidth = localVideo.getBoundingClientRect().width;
+    const viewHeight = localVideo.getBoundingClientRect().height;
+
+    localCanvas.width = viewWidth;
+    localCanvas.height = viewHeight;
+
+    // fit video size to canvas size
+    ctx.scale(viewWidth/localVideo.videoWidth, viewWidth/localVideo.videoHeight);
     ctx.drawImage(localVideo, 0, 0);
+    
     stopVideo();
     document.getElementById("localVideo").hidden = true;
     
