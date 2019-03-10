@@ -42,15 +42,18 @@ function takeShot() {
     const viewWidth = localVideo.getBoundingClientRect().width;
     const viewHeight = localVideo.getBoundingClientRect().height;
 
-    localCanvas.width = viewWidth;
-    localCanvas.height = viewHeight;
+    localCanvas.width = localVideo.videoWidth;
+    localCanvas.height = localVideo.videoHeight;
 
     // fit video size to canvas size
-    ctx.scale(viewWidth/localVideo.videoWidth, viewHeight/localVideo.videoHeight);
+    //ctx.scale(viewWidth/localVideo.videoWidth, viewHeight/localVideo.videoHeight);
     ctx.drawImage(localVideo, 0, 0);
     
     stopVideo();
     document.getElementById("localVideo").hidden = true;
+
+    localCanvas.style.width = viewWidth;
+    localCanvas.style.height = viewHeight;
     
     var imgData = localCanvas.toDataURL();
 }
