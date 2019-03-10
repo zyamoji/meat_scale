@@ -35,6 +35,13 @@ function makeMeat() {
   }
     // 計算結果でCanvasの表示内容を更新する。
     ctx.putImageData(imageData, 0, 0);
+
+    let imgData = localCanvas.toDataURL();
+    localCanvas.hidden = true;
+    let imgTag = document.getElementById("pngImg");
+    imgTag.style.width = localCanvas.style.width;
+    imgTag.style.height = localCanvas.style.height;
+    imgTag.src = imgData;
 }
 
 function takeShot() {
@@ -51,12 +58,11 @@ function takeShot() {
     ctx.drawImage(localVideo, 0, 0, localCanvas.width*2, localCanvas.height*2);
     
     stopVideo();
-    document.getElementById("localVideo").hidden = true;
+    localVideo.hidden = true;
 
     localCanvas.style.width = viewWidth;
     localCanvas.style.height = viewHeight;
     
-    var imgData = localCanvas.toDataURL();
 }
 
 function startVideo() {
