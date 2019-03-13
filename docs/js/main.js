@@ -3,8 +3,15 @@ let localCanvas = document.getElementById('canvas');
 ctx = localCanvas.getContext('2d');
 let localStream;
 let deviceWidth;
+// buttons
+const start_btn = document.getElementById('start_btn');
+const shot_btn = document.getElementById('shot_btn');
+const stop_camera_btn = document.getElementById('stop_camera_btn');
+const meatage_btn = document.getElementById('meatage_btn');
     
 function makeMeat() {
+  localCanvas.hidden = false;
+  localVideo.hidden = true;
   // Canvasから描画内容を保持するimageDataを取得する。
   var imageData = ctx.getImageData(0, 0, localCanvas.width, localCanvas.height);
   // 描画内容に対して、上記のグレースケールにする式を当てはめながらrgbの値を計算する。
@@ -39,12 +46,20 @@ function makeMeat() {
     let imgData = localCanvas.toDataURL();
     localCanvas.hidden = true;
     let imgTag = document.getElementById("pngImg");
+    imgTag.hidden = false;
     imgTag.style.width = localCanvas.style.width;
     imgTag.style.height = localCanvas.style.height;
     imgTag.src = imgData;
 }
 
 function takeShot() {
+    // disable other button
+    start_btn.style.visibility = "visible";
+    shot_btn.style.visibility = "hidden";
+    stop_camera_btn.style.visibility = "hidden";
+    
+    localCanvas.hidden = false;
+    
     // get video width on display
     const viewWidth = localVideo.getBoundingClientRect().width;
     const viewHeight = localVideo.getBoundingClientRect().height;
@@ -56,8 +71,9 @@ function takeShot() {
     //ctx.scale(viewWidth/localVideo.videoWidth, viewHeight/localVideo.videoHeight);
     ctx.scale(2, 2);
     ctx.drawImage(localVideo, 0, 0, localCanvas.width*0.5, localCanvas.height*0.5);
-    
+
     stopVideo();
+    meatage_btn.style.visibility = "visible";
     localVideo.hidden = true;
 
     localCanvas.style.width = viewWidth;
@@ -66,6 +82,17 @@ function takeShot() {
 }
 
 function startVideo() {
+    // disable other button
+    start_btn.style.visibility = "hidden";
+    shot_btn.style.visibility = "visible";
+    stop_camera_btn.style.visibility = "visible";
+    meatage_btn.style.visibility = "hidden";
+    // disable png area
+    const pngImg = document.getElementById('pngImg');
+    pngImg.hidden = true;
+    localCanvas.hidden = true;
+    localVideo.hidden = false;
+
     navigator.mediaDevices.getUserMedia(
         {video: {facingMode: {exact: "environment"}}})
 	.then(function (stream) {
@@ -79,6 +106,12 @@ function startVideo() {
 }
 
 function stopVideo() {
+    // disable other button
+    start_btn.style.visibility = "visible";
+    shot_btn.style.visibility = "hidden";
+    stop_camera_btn.style.visibility = "hidden";
+    meatage_btn.style.visibility = "hidden";
+
     for (track of localStream.getTracks()) {
         track.stop();
     }
