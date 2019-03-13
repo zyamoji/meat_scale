@@ -3,13 +3,14 @@
         <meta charset="UTF-8" />
         <title>肉写真化</title>
         <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
         <br>
-        <button onclick="startVideo()">撮影開始</button>
-        <button onclick="takeShot()">ハイチーズ！</button>
-        <button onclick="stopVideo()">おいカメラ止めろ</button>
-        <button onclick="makeMeat()">肉写真化</button>
+        <button onclick="startVideo()" id="start_btn">撮影開始</button>
+        <button onclick="takeShot()" id="shot_btn">ハイチーズ！</button>
+        <button onclick="stopVideo()" id="stop_camera_btn">おいカメラ止めろ</button>
+        <button onclick="makeMeat()" id="meatage_btn">肉写真化</button>
         <br>
         <video id="localVideo" autoplay="" src="" playsInline width="100%"></video>
         <canvas id="canvas" width="100%"></canvas>
