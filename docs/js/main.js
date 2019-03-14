@@ -8,6 +8,7 @@ const start_btn = document.getElementById('start_btn');
 const shot_btn = document.getElementById('shot_btn');
 const stop_camera_btn = document.getElementById('stop_camera_btn');
 const meatage_btn = document.getElementById('meatage_btn');
+const upload_btn =document.getElementById('upload_btn');
     
 function makeMeat() {
   localCanvas.hidden = false;
@@ -120,3 +121,35 @@ function stopVideo() {
     window.URL.revokeObjectURL(localVideo.src);
     localVideo.src='';
 }
+
+// 画像が参照されたらcanvasに表示
+upload_btn.addEventListener('change', function() {
+    let upload_image = this.files[0];
+    // 画像じゃなかったら終了
+    if (!upload_image.type.match(/^image\/(png|jpeg|jpeg|gif)$/)) return;
+
+    let image = new Image();
+    let reader = new FileReader();
+
+    reader.onload = function(evt) {
+        image.onload = function() {
+            localCanvas.width = image.width;
+            localCanvas.height = image.height;
+
+            ctx.scale(2, 2);
+            ctx.drawImage(image, 0, 0, localCanvas.width*0.5, localCanvas.height*0.5);
+            // 動画部分を非表示
+            localVideo.hidden = true;
+
+            // disable other button
+            start_btn.style.visibility = "visible";
+            shot_btn.style.visibility = "hidden";
+            stop_camera_btn.style.visibility = "hidden";
+            meatage_btn.style.visibility = "visible";
+
+        }
+
+        image.src = evt.target.result;
+    }
+    reader.readAsDataURL(upload_image);
+});
