@@ -133,8 +133,12 @@ upload_btn.addEventListener('change', function() {
 
     reader.onload = function(evt) {
         image.onload = function() {
-            localCanvas.width = image.width;
-            localCanvas.height = image.height;
+            const viewWidth = localVideo.getBoundingClientRect().width;
+            const viewHeight = localVideo.getBoundingClientRect().height;
+            canvasWidth = Math.min(viewWidth, image.width);
+            localCanvas.width = canvasWidth;
+            // keep aspect ratio
+            localCanvas.height = image.height * canvasWidth / image.width;
 
             ctx.scale(2, 2);
             ctx.drawImage(image, 0, 0, localCanvas.width*0.5, localCanvas.height*0.5);
