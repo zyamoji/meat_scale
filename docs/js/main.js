@@ -133,6 +133,8 @@ upload_btn.addEventListener('change', function() {
 
     reader.onload = function(evt) {
         image.onload = function() {
+            localVideo.hidden = false;
+            localCanvas.hidden = false;
             const viewWidth = localVideo.getBoundingClientRect().width;
             const viewHeight = localVideo.getBoundingClientRect().height;
             canvasWidth = Math.min(viewWidth, image.width);
@@ -150,6 +152,10 @@ upload_btn.addEventListener('change', function() {
             shot_btn.style.visibility = "hidden";
             stop_camera_btn.style.visibility = "hidden";
             meatage_btn.style.visibility = "visible";
+
+            const pngImg = document.getElementById('pngImg');
+            pngImg.src = "";
+            pngImg.hidden = true;
 
         }
 
