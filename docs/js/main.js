@@ -163,3 +163,9 @@ upload_btn.addEventListener('change', function() {
     }
     reader.readAsDataURL(upload_image);
 });
+
+
+// ビデオ画面をクリックしたら撮影
+localVideo.addEventListener('click', function() {
+    takeShot();
+});
