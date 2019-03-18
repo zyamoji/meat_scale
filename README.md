@@ -7,6 +7,8 @@ Not Grayscale, but Meatscale
 
 This app convert your photo into meat-like-photo.
 
+Now PWA ready!
+
 Demo  
 ![demo](./resource/meat_scale_sample.gif)
 
