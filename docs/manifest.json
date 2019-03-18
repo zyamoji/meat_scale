@@ -10,7 +10,7 @@
         "sizes": "192x192",
         "type": "image/png"
     }],
-    "start_url": "/?homescreen=1",
-    "scope": "/",
+    "start_url": "/meat_scale/?homescreen=1",
+    "scope": "/meat_scale/",
     "display": "standalone"
 }
