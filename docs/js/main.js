@@ -127,23 +127,62 @@ upload_btn.addEventListener('change', function() {
     let upload_image = this.files[0];
     // 画像じゃなかったら終了
     if (!upload_image.type.match(/^image\/(png|jpeg|jpeg|gif)$/)) return;
+    // 画像の回転方向を取得
+    let orientation = 1;
+    EXIF.getData(upload_image, function () {
+        orientation = upload_image.exifdata.Orientation;
+    })
 
     let image = new Image();
     let reader = new FileReader();
 
     reader.onload = function(evt) {
         image.onload = function() {
+            // 回転方向を検出
+            let rotationRate = 0;
+            switch (orientation) {
+                case 6:
+                    rotationRate = 90;
+                    break;
+                case 3:
+                    rotationRate = 180;
+                    break;
+                case 8:
+                    rotationRate = 270;
+                    break;
+            }
+
             localVideo.hidden = false;
             localCanvas.hidden = false;
             const viewWidth = localVideo.getBoundingClientRect().width;
             const viewHeight = localVideo.getBoundingClientRect().height;
+
             canvasWidth = Math.min(viewWidth, image.width);
             localCanvas.width = canvasWidth;
-            // keep aspect ratio
-            localCanvas.height = image.height * canvasWidth / image.width;
+            // 90度、270度だと、縦と横が入れ替わる
+            if (rotationRate == 90 || rotationRate == 270) {
+                // keep aspect ratio
+                localCanvas.height = image.width * canvasWidth / image.height;
+                ctx.rotate(rotationRate * Math.PI / 180);
+                if (rotationRate == 90) {
+                    ctx.translate(0, -localCanvas.width);
+                } else if (rotationRate == 270) {
+                    ctx.translate(-localCanvas.height, 0);
+                }
+                ctx.scale(2, 2);
+                ctx.drawImage(image, 0, 0, localCanvas.height*0.5, localCanvas.width*0.5);
+            } else {
+                // そのままと180度は縦横変化なし
+                // keep aspect ratio
+                localCanvas.height = image.height * canvasWidth / image.width;
+                if (rotationRate == 180) {
+                    ctx.rotate(rotationRate * Math.PI / 180);
+                    ctx.translate(-localCanvas.width, -localCanvas.height);
+                }
+                ctx.scale(2, 2);
+                ctx.drawImage(image, 0, 0, localCanvas.width*0.5, localCanvas.height*0.5);
+            }
 
-            ctx.scale(2, 2);
-            ctx.drawImage(image, 0, 0, localCanvas.width*0.5, localCanvas.height*0.5);
             // 動画部分を非表示
             localVideo.hidden = true;
 
